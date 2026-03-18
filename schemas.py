@@ -3,9 +3,6 @@ from decimal import Decimal
 from pydantic import BaseModel, EmailStr, ConfigDict
 from models import CategoryEnum, ScholarshipEnum, InternshipTypeEnum, PaperTypeEnum
 
-
-# ── Student ──────────────────────────────────────────────────────────────────
-
 class StudentBase(BaseModel):
     roll_number: str
     name: str
@@ -15,10 +12,8 @@ class StudentBase(BaseModel):
     mobile: str
     address: Optional[str] = None
 
-
 class StudentCreate(StudentBase):
     pass
-
 
 class StudentUpdate(BaseModel):
     name: Optional[str] = None
@@ -28,15 +23,11 @@ class StudentUpdate(BaseModel):
     mobile: Optional[str] = None
     address: Optional[str] = None
 
-
 class StudentResponse(StudentBase):
     model_config = ConfigDict(from_attributes=True)
     id: int
     photo_path: Optional[str] = None
     signature_path: Optional[str] = None
-
-
-# ── Classification ────────────────────────────────────────────────────────────
 
 class ClassificationBase(BaseModel):
     is_hosteller: bool = False
@@ -47,18 +38,13 @@ class ClassificationBase(BaseModel):
     ncc: bool = False
     nss: bool = False
 
-
 class ClassificationCreate(ClassificationBase):
     pass
-
 
 class ClassificationResponse(ClassificationBase):
     model_config = ConfigDict(from_attributes=True)
     id: int
     student_id: int
-
-
-# ── Parent Details ────────────────────────────────────────────────────────────
 
 class ParentBase(BaseModel):
     parent_name: str
@@ -66,18 +52,13 @@ class ParentBase(BaseModel):
     contact_number: Optional[str] = None
     email: Optional[str] = None
 
-
 class ParentCreate(ParentBase):
     pass
-
 
 class ParentResponse(ParentBase):
     model_config = ConfigDict(from_attributes=True)
     id: int
     student_id: int
-
-
-# ── Academic Records ──────────────────────────────────────────────────────────
 
 class AcademicBase(BaseModel):
     sem1_cgpa: Optional[Decimal] = None
@@ -99,36 +80,26 @@ class AcademicBase(BaseModel):
     attendance_status: Optional[str] = None
     club_activities: Optional[str] = None
 
-
 class AcademicCreate(AcademicBase):
     pass
-
 
 class AcademicResponse(AcademicBase):
     model_config = ConfigDict(from_attributes=True)
     id: int
     student_id: int
 
-
-# ── Financial Info ────────────────────────────────────────────────────────────
-
 class FinancialBase(BaseModel):
     has_loan: bool = False
     scholarship_type: ScholarshipEnum = ScholarshipEnum.none
     scholarship_amount: Optional[Decimal] = None
 
-
 class FinancialCreate(FinancialBase):
     pass
-
 
 class FinancialResponse(FinancialBase):
     model_config = ConfigDict(from_attributes=True)
     id: int
     student_id: int
-
-
-# ── Internship ────────────────────────────────────────────────────────────────
 
 class InternshipBase(BaseModel):
     internship_type: InternshipTypeEnum
@@ -137,18 +108,13 @@ class InternshipBase(BaseModel):
     has_stipend: bool = False
     stipend_amount: Optional[Decimal] = None
 
-
 class InternshipCreate(InternshipBase):
     pass
-
 
 class InternshipResponse(InternshipBase):
     model_config = ConfigDict(from_attributes=True)
     id: int
     student_id: int
-
-
-# ── Research Paper ────────────────────────────────────────────────────────────
 
 class ResearchBase(BaseModel):
     title: str
@@ -156,18 +122,13 @@ class ResearchBase(BaseModel):
     is_presentation: bool = False
     year: Optional[int] = None
 
-
 class ResearchCreate(ResearchBase):
     pass
-
 
 class ResearchResponse(ResearchBase):
     model_config = ConfigDict(from_attributes=True)
     id: int
     student_id: int
-
-
-# ── Documents ─────────────────────────────────────────────────────────────────
 
 class DocumentsBase(BaseModel):
     aadhaar_verified: bool = False
@@ -175,10 +136,8 @@ class DocumentsBase(BaseModel):
     id_card_verified: bool = False
     library_card: bool = False
 
-
 class DocumentsCreate(DocumentsBase):
     pass
-
 
 class DocumentsResponse(DocumentsBase):
     model_config = ConfigDict(from_attributes=True)
@@ -188,9 +147,6 @@ class DocumentsResponse(DocumentsBase):
     pan_path: Optional[str] = None
     id_card_path: Optional[str] = None
 
-
-# ── NOC Records ───────────────────────────────────────────────────────────────
-
 class NocBase(BaseModel):
     noc_bl_dept: bool = False
     noc_internet_internship: bool = False
@@ -198,18 +154,13 @@ class NocBase(BaseModel):
     noc_nss: bool = False
     noc_inss: bool = False
 
-
 class NocCreate(NocBase):
     pass
-
 
 class NocResponse(NocBase):
     model_config = ConfigDict(from_attributes=True)
     id: int
     student_id: int
-
-
-# ── Placement ─────────────────────────────────────────────────────────────────
 
 class PlacementBase(BaseModel):
     internal_training: bool = False
@@ -219,28 +170,21 @@ class PlacementBase(BaseModel):
     opted_higher_studies: bool = False
     opted_entrepreneurship: bool = False
 
-
 class PlacementCreate(PlacementBase):
     pass
-
 
 class PlacementResponse(PlacementBase):
     model_config = ConfigDict(from_attributes=True)
     id: int
     student_id: int
 
-
-# ── Academic Documents ────────────────────────────────────────────────────────
-
 class AcademicDocsBase(BaseModel):
     all_marksheets: bool = False
     provisional_cert: bool = False
     is_lost: bool = False
 
-
 class AcademicDocsCreate(AcademicDocsBase):
     pass
-
 
 class AcademicDocsResponse(AcademicDocsBase):
     model_config = ConfigDict(from_attributes=True)
@@ -248,9 +192,6 @@ class AcademicDocsResponse(AcademicDocsBase):
     student_id: int
     marksheets_path: Optional[str] = None
     provisional_cert_path: Optional[str] = None
-
-
-# ── Full Profile ──────────────────────────────────────────────────────────────
 
 class FullStudentProfile(StudentResponse):
     classification: Optional[ClassificationResponse] = None
@@ -263,9 +204,6 @@ class FullStudentProfile(StudentResponse):
     academic_documents: Optional[AcademicDocsResponse] = None
     internships: List[InternshipResponse] = []
     research_papers: List[ResearchResponse] = []
-
-
-# ── Dashboard ─────────────────────────────────────────────────────────────────
 
 class DashboardStats(BaseModel):
     total_students: int
