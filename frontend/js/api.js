@@ -37,3 +37,20 @@ function boolDisplay(val) {
     ? '<span class="bool-yes">✓ Yes</span>'
     : '<span class="bool-no">— No</span>';
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  const toggleBtn = document.getElementById("menuToggle");
+  const sidebar = document.querySelector(".sidebar");
+  const mainContent = document.querySelector(".main-content");
+  
+  if (toggleBtn && sidebar) {
+    toggleBtn.addEventListener("click", () => {
+      if (window.innerWidth <= 900) {
+        sidebar.classList.toggle("visible");
+      } else {
+        sidebar.classList.toggle("hidden");
+        if (mainContent) mainContent.classList.toggle("expanded");
+      }
+    });
+  }
+});

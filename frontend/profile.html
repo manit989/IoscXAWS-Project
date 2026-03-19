@@ -43,10 +43,19 @@
 
     <main class="main-content">
       <header class="page-header">
-        <div>
-          <a href="students.html" class="back-link">← Back to Students</a>
-          <h1 class="page-title" id="profileName">Loading...</h1>
-          <p class="page-subtitle" id="profileMeta"></p>
+        <div class="header-left">
+          <button id="menuToggle" class="menu-toggle" aria-label="Toggle Menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+          <div>
+            <a href="students.html" class="back-link">← Back to Students</a>
+            <h1 class="page-title" id="profileName">Loading...</h1>
+            <p class="page-subtitle" id="profileMeta"></p>
+          </div>
         </div>
         <div class="header-actions">
           <button class="btn btn-ghost" id="editBasicBtn">Edit Info</button>
