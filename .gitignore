@@ -1,2 +1,6 @@
+venv/
 .env
-./alembic.ini
+__pycache__/
+uploads/
+*.pyc
+alembic.ini
