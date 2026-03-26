@@ -13,6 +13,7 @@
   --accent-dim: rgba(139, 26, 26, 0.08);
   --accent-hover: #A63030;
   --accent-secondary: #C8A243;
+  --btn-primary-text: #FFFFFF;
   --danger: #C85555;
   --danger-dim: rgba(200, 85, 85, 0.1);
   --success: #4A7C59;
@@ -27,23 +28,34 @@
 }
 
 :root.dark-mode {
-  /* Dark Mode - Warm Editorial Dark */
-  --bg: #12110F;
-  --bg-2: #1A1816;
-  --bg-3: #22201D;
-  --border: #2E2A26;
-  --border-light: #3A352F;
-  --text: #E8E1D9;
-  --text-muted: #B7A99A;
-  --text-dim: #8A7F73;
-  --accent: #C44545;
-  --accent-dim: rgba(196, 69, 69, 0.12);
-  --accent-hover: #E05A5A;
-  --accent-secondary: #D4B15A;
-  --danger: #E06A6A;
-  --danger-dim: rgba(224, 106, 106, 0.12);
-  --success: #5E9E73;
-  --success-dim: rgba(94, 158, 115, 0.12);
+  /* Dark Mode - Premium Minimal SaaS Dashboard */
+  --bg: #0A0C10;           /* Near-black with subtle cool tint */
+  --bg-2: #12151C;         /* Main cards, slightly lighter */
+  --bg-3: #1A1D27;         /* Elevates elements, table headers */
+  --border: #242936;       /* Clean structured borders */
+  --border-light: #2D3343; /* Hover boundaries */
+  
+  /* Text Contrast - Maximum legibility */
+  --text: #F1F5F9;         /* Off-white for headings, primary stats */
+  --text-muted: #94A3B8;   /* Neutral slate for general labels & reading */
+  --text-dim: #64748B;     /* Subdued grey for subtle details */
+  
+  /* Primary Actions & Highlights */
+  --accent: #f0a500;       /* Amber for prime actions (the Add Student button) */
+  --accent-dim: rgba(240, 165, 0, 0.1); 
+  --accent-hover: #ffb81c; /* Bright pure yellow on hover */
+  --btn-primary-text: #000000;
+  
+  /* Secondary / Structural Tones - Reduced blue intensity */
+  --accent-secondary: #475569; 
+  --badge-bg: #1E293B;     /* Subtle tag background */
+  --badge-text: #CBD5E1;   /* Subtle tag text */
+  
+  /* Status Colors */
+  --danger: #EF4444;       
+  --danger-dim: rgba(239, 68, 68, 0.1);
+  --success: #10B981;
+  --success-dim: rgba(16, 185, 129, 0.1);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -625,7 +637,7 @@ a { color: inherit; text-decoration: none; }
 
 .btn-primary {
   background: var(--accent);
-  color: #FFFFFF;
+  color: var(--btn-primary-text);
   border-color: var(--accent);
 }
 
@@ -811,8 +823,8 @@ a { color: inherit; text-decoration: none; }
 
 .filter-select:focus {
   outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-dim);
+  border-color: var(--accent-secondary);
+  box-shadow: 0 0 0 3px rgba(71, 85, 105, 0.2);
 }
 
 .table-card {
@@ -820,7 +832,7 @@ a { color: inherit; text-decoration: none; }
   border: 1px solid var(--border);
   border-radius: var(--radius);
   overflow: hidden;
-  box-shadow: 0 1px 2px rgba(28, 26, 26, 0.03);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 .data-table {
@@ -830,14 +842,14 @@ a { color: inherit; text-decoration: none; }
 
 .data-table th {
   background: var(--bg-3);
-  padding: 11px 16px;
+  padding: 12px 16px;
   text-align: left;
   font-size: 11px;
   font-family: var(--font-mono);
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.8px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 2px solid var(--border); /* Slightly thicker border for separation */
   font-weight: 600;
 }
 
@@ -870,8 +882,8 @@ a { color: inherit; text-decoration: none; }
 .roll-badge {
   font-family: var(--font-mono);
   font-size: 12px;
-  background: var(--bg-3);
-  border: 1px solid var(--border);
+  background: var(--accent-dim);
+  border: 1px solid rgba(240, 165, 0, 0.2);
   padding: 2px 8px;
   border-radius: 4px;
   color: var(--accent);
@@ -880,7 +892,7 @@ a { color: inherit; text-decoration: none; }
 .year-badge {
   font-family: var(--font-mono);
   font-size: 12px;
-  color: var(--text-muted);
+  color: var(--text-dim);
 }
 
 .branch-badge {
@@ -890,7 +902,7 @@ a { color: inherit; text-decoration: none; }
   border-radius: 4px;
   background: var(--accent-dim);
   color: var(--accent);
-  border: 1px solid rgba(240,165,0,0.2);
+  border: 1px solid rgba(240, 165, 0, 0.2);
 }
 
 .action-btns {
