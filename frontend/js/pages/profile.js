@@ -12,6 +12,14 @@ let nocExists = false;
 let placementExists = false;
 let acadocsExists = false;
 
+function getPhotoUrl(photo_path) {
+  if (!photo_path) return null;
+  if (photo_path.startsWith("http://") || photo_path.startsWith("https://")) {
+    return photo_path;
+  }
+  return `${API}${photo_path.startsWith('/') ? '' : '/'}${photo_path}`;
+}
+
 async function loadProfile() {
   try {
     studentData = await apiFetch(`/students/${studentId}`);
@@ -47,6 +55,9 @@ function renderBasicInfo(s) {
   document.getElementById("basicInfoView").innerHTML = `
     <div class="section-header">
       <h3 class="section-title">Basic Info</h3>
+    </div>
+    <div style="margin-bottom: 20px;">
+      ${s.photo_path ? `<img src="${getPhotoUrl(s.photo_path)}" alt="Profile Photo" style="width: 150px; height: 150px; border-radius: 5px; object-fit: cover;">` : `<div style="width:150px;height:150px;background:#eee;border-radius:5px;display:flex;align-items:center;justify-content:center;color:#999;">No Photo</div>`}
     </div>
     <div class="info-grid">
       <div class="info-item"><span class="info-label">Roll Number</span><span class="info-value mono">${s.roll_number}</span></div>
@@ -663,7 +674,7 @@ async function uploadFile(endpoint, fieldName, fileInput) {
   if (!file) return false;
   const formData = new FormData();
   formData.append(fieldName, file);
-  const res = await fetch(`http://localhost:8000${endpoint}`, {
+  const res = await fetch(`${API}${endpoint}`, {
     method: "POST",
     body: formData,
   });
@@ -709,7 +720,7 @@ document.getElementById("uploadDocsBtn").addEventListener("click", async () => {
     if (pan.files[0]) formData.append("pan", pan.files[0]);
     if (idCard.files[0]) formData.append("id_card", idCard.files[0]);
 
-    const res = await fetch(`http://localhost:8000/students/${studentId}/documents/upload`, {
+    const res = await fetch(`${API}/students/${studentId}/documents/upload`, {
       method: "POST",
       body: formData,
     });
@@ -734,7 +745,7 @@ document.getElementById("uploadAcadocsBtn").addEventListener("click", async () =
     if (marksheets.files[0]) formData.append("marksheets", marksheets.files[0]);
     if (provisional.files[0]) formData.append("provisional_cert", provisional.files[0]);
 
-    const res = await fetch(`http://localhost:8000/students/${studentId}/academic-documents/upload`, {
+    const res = await fetch(`${API}/students/${studentId}/academic-documents/upload`, {
       method: "POST",
       body: formData,
     });

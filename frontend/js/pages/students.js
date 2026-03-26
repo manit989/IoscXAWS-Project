@@ -1,6 +1,14 @@
 let allStudents = [];
 let deleteTargetId = null;
 
+function getPhotoUrl(photo_path) {
+  if (!photo_path) return null;
+  if (photo_path.startsWith("http://") || photo_path.startsWith("https://")) {
+    return photo_path;
+  }
+  return `${API}/${photo_path}`;
+}
+
 async function loadStudents(branch = "", year = "") {
   const tbody = document.getElementById("studentsTableBody");
   tbody.innerHTML = '<tr><td colspan="7" class="table-empty">Loading...</td></tr>';
@@ -31,7 +39,7 @@ function renderTable(students) {
     <tr>
       <td>
         ${s.photo_path
-          ? `<img src="http://localhost:8000/${s.photo_path}" class="student-photo" alt="${s.name}"/>`
+          ? `<img src="${getPhotoUrl(s.photo_path)}" class="student-photo" alt="${s.name}"/>`
           : `<div class="student-photo-placeholder">${s.name.charAt(0).toUpperCase()}</div>`
         }
       </td>
@@ -95,6 +103,46 @@ document.getElementById("clearFilters").addEventListener("click", () => {
   document.getElementById("filterBranch").value = "";
   document.getElementById("filterYear").value = "";
   loadStudents();
+});
+
+document.getElementById("downloadPdfBtn").addEventListener("click", () => {
+  try {
+    const doc = new window.jsPDF();
+    
+    doc.text("Student List", 14, 15);
+    
+    const query = document.getElementById("searchInput").value.toLowerCase().trim();
+    let studentsToPrint = allStudents;
+    if (query) {
+      studentsToPrint = allStudents.filter(s =>
+        s.name.toLowerCase().includes(query) ||
+        s.roll_number.toLowerCase().includes(query)
+      );
+    }
+    
+    const headers = [["Roll Number", "Name", "Branch", "Year", "Email", "Mobile"]];
+    const data = studentsToPrint.map(s => [
+      s.roll_number || "-",
+      s.name || "-",
+      s.branch || "-",
+      s.year || "-",
+      s.email || "-",
+      s.mobile || "-"
+    ]);
+
+    doc.autoTable({
+      head: headers,
+      body: data,
+      startY: 20,
+      styles: { fontSize: 8 },
+      headStyles: { fillColor: [79, 70, 229] }
+    });
+
+    doc.save("students_list.pdf");
+  } catch (err) {
+    console.error(err);
+    alert("An error occurred while generating the PDF: " + err.message);
+  }
 });
 
 loadStudents();
