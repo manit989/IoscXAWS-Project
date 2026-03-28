@@ -4,7 +4,7 @@ const API = (window.location.hostname === 'localhost' || window.location.hostnam
 
 async function apiFetch(path, options = {}) {
   const res = await fetch(API + path, {
-    headers: { "Content-Type": "application/json", ...options.headers },
+    headers: { "Content-Type": "application/json", ...(localStorage.getItem("token") ? {"Authorization": `Bearer ${localStorage.getItem("token")}`} : {}), ...options.headers },
     ...options,
   });
   if (!res.ok) {
@@ -143,7 +143,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (logoutBtn) {
     logoutBtn.addEventListener("click", () => {
       if (confirm("Are you sure you want to logout?")) {
-        window.location.href = "/login";
+        window.location.href = "/frontend/login.html";
       }
     });
   }

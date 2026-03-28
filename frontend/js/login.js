@@ -1,159 +1,14 @@
-const API = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') 
-  ? "http://localhost:8000" 
-  : "https://estudent-cell.onrender.com";
-
-let currentRole = 'student'; // Track current role
-
-// Show/hide alert
-function showAlert(message, type = 'error') {
-  const alertBox = document.getElementById('alertBox');
-  alertBox.textContent = message;
-  alertBox.className = `alert show alert-${type}`;
-  
-  setTimeout(() => {
-    alertBox.classList.remove('show');
-  }, 5000);
-}
-
-// Switch between student and admin login
-function switchRole(role) {
-  currentRole = role;
-  
-  const studentForm = document.getElementById('studentForm');
-  const adminForm = document.getElementById('adminForm');
-  const studentTab = document.getElementById('studentTab');
-  const adminTab = document.getElementById('adminTab');
-  
-  if (role === 'student') {
-    studentForm.style.display = 'block';
-    adminForm.classList.remove('show');
-    studentTab.classList.add('active');
-    adminTab.classList.remove('active');
-  } else {
-    studentForm.style.display = 'none';
-    adminForm.classList.add('show');
-    studentTab.classList.remove('active');
-    adminTab.classList.add('active');
-  }
-  
-  // Clear error messages
-  document.getElementById('alertBox').classList.remove('show');
-}
-
-// Submit student login form
-async function submitStudentLogin(e) {
-  e.preventDefault();
-  
-  const enrollmentNumber = document.getElementById('enrollmentNumber').value.trim();
-  const password = document.getElementById('studentPassword').value;
-  const submitBtn = document.getElementById('studentSubmitBtn');
-  
-  if (!enrollmentNumber || !password) {
-    showAlert('Please fill in all fields', 'error');
-    return;
-  }
-  
-  submitBtn.disabled = true;
-  submitBtn.classList.add('loading');
-  
-  try {
-    const response = await fetch(`${API}/auth/login/student`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        username: enrollmentNumber,
-        password: password
-      })
-    });
-    
-    if (!response.ok) {
-      const error = await response.json();
-      showAlert(error.detail || 'Invalid credentials', 'error');
-      submitBtn.disabled = false;
-      submitBtn.classList.remove('loading');
-      return;
-    }
-    
-    const data = await response.json();
-    
-    // Store token
-    localStorage.setItem('token', data.access_token);
-    localStorage.setItem('role', 'student');
-    
-    // Redirect to student dashboard
-    window.location.href = 'dashboard2.html';
-  } catch (error) {
-    console.error('Login error:', error);
-    showAlert('Connection error. Please try again.', 'error');
-    submitBtn.disabled = false;
-    submitBtn.classList.remove('loading');
-  }
-}
-
-// Submit admin login form
-async function submitAdminLogin(e) {
-  e.preventDefault();
-  
-  const adminId = document.getElementById('adminId').value.trim();
-  const password = document.getElementById('adminPassword').value;
-  const submitBtn = document.getElementById('adminSubmitBtn');
-  
-  if (!adminId || !password) {
-    showAlert('Please fill in all fields', 'error');
-    return;
-  }
-  
-  submitBtn.disabled = true;
-  submitBtn.classList.add('loading');
-  
-  try {
-    const response = await fetch(`${API}/auth/login/admin`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        username: adminId,
-        password: password
-      })
-    });
-    
-    if (!response.ok) {
-      const error = await response.json();
-      showAlert(error.detail || 'Invalid admin credentials', 'error');
-      submitBtn.disabled = false;
-      submitBtn.classList.remove('loading');
-      return;
-    }
-    
-    const data = await response.json();
-    
-    // Store token
-    localStorage.setItem('token', data.access_token);
-    localStorage.setItem('role', 'admin');
-    
-    // Redirect to admin dashboard
-    window.location.href = 'index.html';
-  } catch (error) {
-    console.error('Login error:', error);
-    showAlert('Connection error. Please try again.', 'error');
-    submitBtn.disabled = false;
-    submitBtn.classList.remove('loading');
-  }
-}
-
-// Check if user is already logged in
-window.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
+  // ----------------------------------------------------
+  // Session Recognition & Redirect
+  // ----------------------------------------------------
   const token = localStorage.getItem('token');
-  const role = localStorage.getItem('role');
-  
+  const savedRole = localStorage.getItem('role');
+
   if (token) {
-    // User already logged in, redirect to appropriate page
-    if (role === 'admin') {
-      window.location.href = 'index.html';
-    } else if (role === 'student') {
+    if (savedRole === 'admin') {
+      window.location.href = 'index.html'; // Adjust to admin dashboard
+    } else if (savedRole === 'student') {
       const mustChange = localStorage.getItem('must_change_password') === 'true';
       if (mustChange) {
         window.location.href = 'change-password.html';
@@ -162,4 +17,190 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     }
   }
+
+  // ----------------------------------------------------
+  // DOM Elements
+  // ----------------------------------------------------
+  const form = document.getElementById('loginForm');
+  const usernameInput = document.getElementById('username');
+  const passwordInput = document.getElementById('password');
+  const usernameLabel = document.getElementById('usernameLabel');
+  const alertBox = document.getElementById('alertBox');
+  const submitBtn = document.getElementById('submitBtn');
+  const btnText = document.getElementById('btnText');
+  const togglePwdBtn = document.getElementById('togglePassword');
+  const eyeIcon = document.getElementById('eyeIcon');
+  const eyeOffIcon = document.getElementById('eyeOffIcon');
+  const roleButtons = document.querySelectorAll('.role-btn');
+  const rememberMeCheck = document.getElementById('rememberMe');
+  const forgotPwdLink = document.querySelector('.forgot-pwd');
+
+  let currentRole = 'student'; // Default role
+
+  // Environment-based API determination
+  const API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') 
+    ? "http://localhost:8000" 
+    : "https://estudent-cell.onrender.com";
+
+  // ----------------------------------------------------
+  // Pre-fill Remember Me
+  // ----------------------------------------------------
+  const savedUsername = localStorage.getItem('savedUsername');
+  if (savedUsername) {
+    usernameInput.value = savedUsername;
+    rememberMeCheck.checked = true;
+  }
+
+  // ----------------------------------------------------
+  // Role Toggling Logic
+  // ----------------------------------------------------
+  roleButtons.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault(); // Prevent accidental form triggers if any
+      
+      // Update UI state
+      roleButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      
+      // Update data state
+      currentRole = btn.getAttribute('data-role');
+      
+      // Update form presentation based on role
+      if (currentRole === 'student') {
+        usernameLabel.textContent = 'Enrollment Number';
+        usernameInput.placeholder = 'e.g., 5919051924';
+      } else {
+        usernameLabel.textContent = 'Admin ID ';
+        usernameInput.placeholder = 'e.g., AdminIA100';
+      }
+      
+      // Clear warnings / inputs on switch
+      hideAlert();
+      passwordInput.value = '';
+      
+      // Only clear username if Remember Me is not in effect for that role
+      if (!savedUsername || !rememberMeCheck.checked) {
+        usernameInput.value = '';
+      }
+    });
+  });
+
+  // ----------------------------------------------------
+  // Password Visibility Toggle
+  // ----------------------------------------------------
+  togglePwdBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    const isPassword = passwordInput.getAttribute('type') === 'password';
+    passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
+    
+    if (isPassword) {
+      eyeIcon.style.display = 'none';
+      eyeOffIcon.style.display = 'block';
+    } else {
+      eyeIcon.style.display = 'block';
+      eyeOffIcon.style.display = 'none';
+    }
+  });
+
+  // ----------------------------------------------------
+  // Forgot Password
+  // ----------------------------------------------------
+  forgotPwdLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    alert("If unchanged, the preset password is your Father's Name in ALL CAPS. Otherwise, contact Admin.");
+  });
+
+  // ----------------------------------------------------
+  // Alert Helpers
+  // ----------------------------------------------------
+  function showAlert(message) {
+    alertBox.textContent = message;
+    alertBox.classList.add('show');
+  }
+
+  function hideAlert() {
+    alertBox.textContent = '';
+    alertBox.classList.remove('show');
+  }
+
+  // ----------------------------------------------------
+  // Form Submission
+  // ----------------------------------------------------
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    hideAlert();
+
+    const username = usernameInput.value.trim();
+    const password = passwordInput.value;
+
+    // Client-side Validation
+    if (!username || !password) {
+      showAlert('All fields are required.');
+      return;
+    }
+
+    // Set Loading State
+    submitBtn.disabled = true;
+    submitBtn.classList.add('loading');
+    btnText.textContent = 'Logging in...';
+
+    // Build endpoint dynamically
+    const endpoint = currentRole === 'student' 
+      ? `${API_URL}/auth/login/student` 
+      : `${API_URL}/auth/login/admin`;
+
+    try {
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username, password })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        // 4xx or 5xx Response
+        throw new Error(data.detail || 'Invalid credentials');
+      }
+
+      // Handle Remember Me
+      if (rememberMeCheck.checked) {
+        localStorage.setItem('savedUsername', username);
+      } else {
+        localStorage.removeItem('savedUsername');
+      }
+
+      // Success - Store token & role
+      localStorage.setItem('token', data.access_token);
+      localStorage.setItem('role', currentRole);
+      
+      // Optional: Handle must_change_password logic
+      if (data.must_change_password !== undefined) {
+        localStorage.setItem('must_change_password', data.must_change_password);
+      }
+
+      // Redirect based on role
+      if (currentRole === 'admin') {
+        window.location.href = 'index.html';
+      } else {
+        if (data.must_change_password) {
+          window.location.href = 'change-password.html';
+        } else {
+          window.location.href = 'dashboard2.html';
+        }
+      }
+
+    } catch (error) {
+      console.error('Login error:', error);
+      showAlert(error.message || 'Network error. Please try again later.');
+    } finally {
+      // Revert loading state if not redirecting immediately
+      submitBtn.disabled = false;
+      submitBtn.classList.remove('loading');
+      btnText.textContent = 'Sign In';
+    }
+  });
+
 });

@@ -41,6 +41,55 @@ async function loadStudentData() {
           document.getElementById('studentName').textContent = student.name || '—';
           document.getElementById('studentBranch').textContent = student.branch || '—';
           document.getElementById('studentYear').textContent = student.year || '—';
+          const headerPhoto = document.getElementById('headerProfilePhoto');
+          if (headerPhoto && student.photo_path) {
+            const photoUrl = student.photo_path.startsWith('http') ? student.photo_path : `${API}${student.photo_path.startsWith('/') ? '' : '/'}${student.photo_path}`;
+            headerPhoto.innerHTML = `<img src="${photoUrl}" alt="${student.name}" style="width: 100%; height: 100%; object-fit: cover;">`;
+          }
+
+          // Calculate Profile Completion
+          let completed = 0;
+          const totalDocs = 10;
+          if (student.classification) completed++;
+          if (student.parent_details) completed++;
+          if (student.academic_records) completed++;
+          if (student.financial_info) completed++;
+          if (student.internships && student.internships.length > 0) completed++;
+          if (student.research_papers && student.research_papers.length > 0) completed++;
+          if (student.documents) completed++;
+          if (student.noc_records) completed++;
+          if (student.placement) completed++;
+          if (student.academic_documents) completed++;
+
+          let pcent = Math.round((completed / totalDocs) * 100);
+          const chartEl = document.getElementById('profileCompletionChart');
+          const textEl = document.getElementById('profileCompletionText');
+          if (chartEl && textEl) {
+            chartEl.style.background = `conic-gradient(var(--accent) ${pcent}%, var(--bg-3) 0%)`;
+            textEl.textContent = `${pcent}%`;
+          }
+
+          // Calculate Profile Completion
+          let completed = 0;
+          const totalDocs = 10;
+          if (student.classification) completed++;
+          if (student.parent_details) completed++;
+          if (student.academic_records) completed++;
+          if (student.financial_info) completed++;
+          if (student.internships && student.internships.length > 0) completed++;
+          if (student.research_papers && student.research_papers.length > 0) completed++;
+          if (student.documents) completed++;
+          if (student.noc_records) completed++;
+          if (student.placement) completed++;
+          if (student.academic_documents) completed++;
+
+          let pcent = Math.round((completed / totalDocs) * 100);
+          const chartEl = document.getElementById('profileCompletionChart');
+          const textEl = document.getElementById('profileCompletionText');
+          if (chartEl && textEl) {
+            chartEl.style.background = `conic-gradient(var(--accent) ${pcent}%, var(--bg-3) 0%)`;
+            textEl.textContent = `${pcent}%`;
+          }
         }
       } catch (error) {
         console.log('Could not fetch student details:', error);

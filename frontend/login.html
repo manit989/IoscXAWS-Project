@@ -4,346 +4,321 @@
   <meta charset="UTF-8" />
   <link rel="icon" type="image/jpeg" href="ipu.jpg"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>E-Student Cell - Login</title>
-  <link rel="stylesheet" href="css/style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Sans+3:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet"/>
+  <title>E-Student Cell - Premium Login</title>
+  
+  <!-- Modern Typography (Inter) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
   <style>
-    /* Login Page Specific Styles */
+    /* Premium Editorial Theme Variables */
+    :root {
+      --font-inter: 'Inter', sans-serif;
+      --bg: #F8F5EC;
+      --bg-card: #FFFFFF;
+      --input-bg: #F1E9D8;
+      --border: #E3D8C4;
+      --text-main: #1C1A1A;
+      --text-muted: #5E544A;
+      --primary: #8B1A1A;    /* Maroon */
+      --primary-hover: #C8A243; /* Gold */
+      --focus-ring: rgba(139, 26, 26, 0.4);
+      --danger: #C85555;
+      --danger-bg: rgba(200, 85, 85, 0.1);
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
+      font-family: var(--font-inter);
+      background-color: var(--bg);
+      color: var(--text-main);
       display: flex;
       align-items: center;
       justify-content: center;
       min-height: 100vh;
-      background: linear-gradient(135deg, var(--bg) 0%, var(--bg-3) 100%);
+      line-height: 1.5;
     }
 
+    /* Layout & Card */
     .login-container {
       width: 100%;
-      max-width: 420px;
+      max-width: 440px;
       padding: 2rem;
     }
 
     .login-card {
-      background: var(--bg-2);
+      background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 2rem;
-      box-shadow: 0 4px 12px rgba(28, 26, 26, 0.08);
+      padding: 2.5rem 2rem;
+      box-shadow: 0 10px 30px rgba(28, 26, 26, 0.05),
+                  0 1px 3px rgba(28, 26, 26, 0.03);
     }
 
+    /* Header */
     .login-header {
       text-align: center;
-      margin-bottom: 2rem;
+      margin-bottom: 2.5rem;
     }
-
     .login-logo {
-      width: 60px;
-      height: 60px;
-      margin: 0 auto 1rem;
-      border-radius: 8px;
+      width: 56px;
+      height: 56px;
+      margin: 0 auto 1.25rem;
+      border-radius: var(--radius);
       overflow: hidden;
-      box-shadow: 0 2px 8px rgba(139, 26, 26, 0.15);
+      box-shadow: 0 4px 12px rgba(139, 26, 26, 0.1);
     }
-
     .login-logo img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
-
-    .login-title {
-      font-family: var(--font-display);
+    .login-header h1 {
       font-size: 24px;
       font-weight: 700;
-      color: var(--text);
-      margin-bottom: 0.5rem;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.25rem;
     }
-
-    .login-subtitle {
-      font-size: 13px;
+    .login-header p {
+      font-size: 14px;
       color: var(--text-muted);
-      font-weight: 500;
     }
 
-    /* Form Styles */
+    /* Role Toggles */
+    .role-toggle {
+      display: flex;
+      gap: 0.5rem;
+      background: var(--bg);
+      padding: 0.35rem;
+      border-radius: var(--radius);
+      margin-bottom: 2rem;
+      border: 1px solid var(--border);
+    }
+    .role-btn {
+      flex: 1;
+      padding: 0.75rem;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: transparent;
+      border: none;
+      border-radius: calc(var(--radius) - 2px);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .role-btn.active {
+      background: var(--bg-card);
+      color: var(--primary);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+    .role-btn:not(.active):hover {
+      color: var(--text-main);
+    }
+
+    /* Form Fields */
     .form-group {
-      margin-bottom: 1.25rem;
+      margin-bottom: 1.5rem;
+      position: relative;
     }
-
     .form-label {
       display: block;
       font-size: 13px;
       font-weight: 600;
-      color: var(--text);
       margin-bottom: 0.5rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      color: var(--text-main);
     }
-
+    
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
     .form-input {
       width: 100%;
-      padding: 10px 12px;
+      padding: 0.85rem 1rem;
+      font-family: inherit;
+      font-size: 15px;
+      color: var(--text-main);
+      background: var(--input-bg);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      font-family: var(--font-body);
-      font-size: 14px;
-      color: var(--text);
-      background: var(--bg);
-      transition: all 0.2s;
+      transition: all 0.2s ease;
     }
-
     .form-input:focus {
       outline: none;
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px var(--accent-dim);
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--focus-ring);
+      background: var(--bg-card);
     }
-
     .form-input::placeholder {
-      color: var(--text-dim);
+      color: #A39B90;
     }
 
-    .submit-btn {
-      width: 100%;
-      padding: 11px;
-      background: var(--accent);
-      color: var(--bg);
-      border: none;
-      border-radius: var(--radius);
-      font-family: var(--font-body);
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .submit-btn:hover {
-      background: var(--accent-hover);
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(139, 26, 26, 0.2);
-    }
-
-    .submit-btn:active {
-      transform: translateY(0);
-    }
-
-    .submit-btn:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-
-    /* Role Toggle */
-    .role-toggles {
-      display: flex;
-      gap: 1rem;
-      margin-bottom: 2rem;
-    }
-
-    .role-tab {
-      flex: 1;
-      padding: 10px;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-muted);
-      cursor: pointer;
-      transition: all 0.2s;
-      text-align: center;
-    }
-
-    .role-tab.active {
-      background: var(--accent-dim);
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-
-    .role-tab:hover {
-      background: var(--accent-dim);
-    }
-
-    /* Alert Messages */
-    .alert {
-      padding: 10px 12px;
-      border-radius: var(--radius);
-      font-size: 13px;
-      margin-bottom: 1rem;
-      display: none;
-    }
-
-    .alert.show {
-      display: block;
-    }
-
-    .alert-error {
-      background: var(--danger-dim);
-      color: var(--danger);
-      border: 1px solid var(--danger);
-    }
-
-    .alert-success {
-      background: var(--success-dim);
-      color: var(--success);
-      border: 1px solid var(--success);
-    }
-
-    /* Admin Section (Hidden by default) */
-    .admin-section {
-      display: none;
-    }
-
-    .admin-section.show {
-      display: block;
-    }
-
-    .form-toggle-link {
-      text-align: center;
-      margin-top: 1.5rem;
-      font-size: 12px;
-    }
-
-    .form-toggle-link a {
-      color: var(--accent);
-      cursor: pointer;
-      font-weight: 600;
-      text-decoration: none;
-      transition: all 0.2s;
-    }
-
-    .form-toggle-link a:hover {
-      color: var(--accent-hover);
-    }
-
-    /* Loading State */
-    .loading {
-      position: relative;
-    }
-
-    .loading::after {
-      content: '';
+    /* Password Toggle */
+    .pwd-toggle {
       position: absolute;
       right: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 16px;
-      height: 16px;
-      border: 2px solid rgba(248, 245, 236, 0.3);
-      border-top-color: var(--bg);
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 44px; /* Touch target */
+      min-height: 44px;
+    }
+    .pwd-toggle:hover {
+      color: var(--primary);
+    }
+    .pwd-toggle svg {
+      width: 20px;
+      height: 20px;
     }
 
-    @keyframes spin {
-      to { transform: translateY(-50%) rotate(360deg); }
+    /* Options: Remember & Forgot Password */
+    .form-options {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      font-size: 13px;
+    }
+    .remember-me {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-weight: 500;
+    }
+    .remember-me input {
+      accent-color: var(--primary);
+      width: 15px;
+      height: 15px;
+      cursor: pointer;
+    }
+    .forgot-pwd {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.2s ease;
+    }
+    .forgot-pwd:hover {
+      color: var(--primary-hover);
     }
 
-    /* Responsive */
-    @media (max-width: 600px) {
-      .login-card {
-        padding: 1.5rem;
-      }
+    /* Submit Button */
+    .submit-btn { width: 100%; padding: 0.9rem; font-family: inherit; font-size: 15px; font-weight: 600; color: #FFFFFF; background: var(--primary); border: none; border-radius: var(--radius); cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 0.5rem; min-height: 48px; }
+    .submit-btn:hover:not(:disabled) { background: var(--primary-hover); }
+    .submit-btn:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--focus-ring); }
+    .submit-btn:disabled { opacity: 0.7; cursor: not-allowed; }
 
-      .login-title {
-        font-size: 20px;
-      }
+    /* Loading Spinner */
+    .spinner { display: none; width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.4); border-top-color: #FFF; border-radius: 50%; animation: spin 0.8s linear infinite; }
+    .submit-btn.loading .spinner { display: inline-block; }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
-      .login-logo {
-        width: 48px;
-        height: 48px;
-      }
+    /* Alert Message */
+    .alert { display: none; padding: 0.85rem 1rem; border-radius: var(--radius); font-size: 14px; font-weight: 500; margin-bottom: 1.5rem; background: var(--danger-bg); color: var(--danger); border: 1px solid rgba(200, 85, 85, 0.3); }
+    .alert.show { display: block; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Footer */
+    .universal-footer {
+      position: fixed;
+      bottom: 16px;
+      right: 16px;
+      font-size: 11px;
+      font-weight: 500;
+      color: #8B7B6F; /* text-dim fallback */
+      font-family: var(--font-inter);
+      z-index: 100;
+      opacity: 0.7;
+      transition: opacity 0.2s;
     }
-
-    :root.dark-mode .login-card {
-      background: var(--bg-2);
-      border-color: var(--border);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    .universal-footer:hover { opacity: 1; }
+    @media (max-width: 768px) {
+      .universal-footer { bottom: 14px; right: 14px; font-size: 10.5px; }
+    }
+    @media (max-width: 480px) {
+      .universal-footer { bottom: 12px; right: 12px; font-size: 10px; }
     }
   </style>
 </head>
 <body>
+  
   <div class="login-container">
     <div class="login-card">
-      <!-- Header -->
       <div class="login-header">
         <div class="login-logo">
-          <img src="ipu.jpg" alt="E-Student Cell Logo" />
+          <img src="ipu.jpg" alt="Logo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'56\' height=\'56\'><rect width=\'56\' height=\'56\' fill=\'%238B1A1A\'/></svg>'">
         </div>
-        <h1 class="login-title">E-Student Cell</h1>
-        <p class="login-subtitle">Management System</p>
+        <h1>E-Student Cell</h1>
+        <p>Sign in to your account</p>
       </div>
 
-      <!-- Alert Messages -->
-      <div id="alertBox" class="alert"></div>
-
-      <!-- Role Tabs -->
-      <div class="role-toggles">
-        <div class="role-tab active" id="studentTab" onclick="switchRole('student')">
-          Student Login
-        </div>
-        <div class="role-tab" id="adminTab" onclick="switchRole('admin')">
-          Admin Login
-        </div>
+      <!-- ADDED: type="button" so they don't accidentally try to "submit" a form -->
+      <div class="role-toggle">
+        <button type="button" id="tab-student" class="role-btn active" data-role="student" aria-label="Student Login">Student</button>
+        <button type="button" id="tab-admin" class="role-btn" data-role="admin" aria-label="Admin Login">Admin</button>
       </div>
 
-      <!-- Student Login Form -->
-      <form id="studentForm" onsubmit="submitStudentLogin(event)">
+      <div id="alertBox" class="alert" role="alert"></div>
+
+      <form id="loginForm" novalidate>
         <div class="form-group">
-          <label class="form-label">Enrollment Number</label>
-          <input 
-            type="text" 
-            class="form-input" 
-            id="enrollmentNumber" 
-            placeholder="e.g., 05919051924" 
-            required 
-          />
+          <label class="form-label" for="username" id="usernameLabel">Enrollment Number</label>
+          <div class="input-wrapper">
+            <input type="text" id="username" class="form-input" placeholder="e.g., 05919051924" required />
+          </div>
         </div>
 
         <div class="form-group">
-          <label class="form-label">Password</label>
-          <input 
-            type="password" 
-            class="form-input" 
-            id="studentPassword" 
-            placeholder="Enter your password" 
-            required 
-          />
+          <label class="form-label" for="password">Password</label>
+          <div class="input-wrapper">
+            <input type="password" id="password" class="form-input" placeholder="Enter your password" required />
+            <button type="button" class="pwd-toggle" id="togglePassword" aria-label="Toggle password visibility">
+              <!-- Eye Icon -->
+              <svg id="eyeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+              <!-- Eye Off (hidden by default) -->
+              <svg id="eyeOffIcon" style="display: none;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                <line x1="1" y1="1" x2="23" y2="23"></line>
+              </svg>
+            </button>
+          </div>
         </div>
 
-        <button type="submit" class="submit-btn" id="studentSubmitBtn">
-          Sign In
-        </button>
-      </form>
-
-      <!-- Admin Login Form (Hidden) -->
-      <form id="adminForm" class="admin-section" onsubmit="submitAdminLogin(event)">
-        <div class="form-group">
-          <label class="form-label">Admin ID</label>
-          <input 
-            type="text" 
-            class="form-input" 
-            id="adminId" 
-            placeholder="e.g., AdminIA100" 
-            required 
-          />
+        <div class="form-options">
+          <label class="remember-me">
+            <input type="checkbox" id="rememberMe" />
+            <span>Remember me</span>
+          </label>
+          <a href="#" class="forgot-pwd">Forgot password?</a>
         </div>
 
-        <div class="form-group">
-          <label class="form-label">Password</label>
-          <input 
-            type="password" 
-            class="form-input" 
-            id="adminPassword" 
-            placeholder="Enter admin password" 
-            required 
-          />
-        </div>
-
-        <button type="submit" class="submit-btn" id="adminSubmitBtn">
-          Sign In as Admin
+        <button type="submit" class="submit-btn" id="submitBtn">
+          <span class="spinner"></span>
+          <span id="btnText">Sign In</span>
         </button>
       </form>
     </div>
   </div>
+
+  <footer class="universal-footer">Made by IoSC & AWS EDC | Support: <a href="mailto:iosc.aws@gmail.com" style="text-decoration: underline;">iosc.aws@gmail.com</a></footer>
 
   <script src="js/login.js"></script>
 </body>

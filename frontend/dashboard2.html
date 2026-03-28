@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -33,20 +33,20 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
           <span class="nav-item-label">Dashboard</span>
         </a>
-        <a href="profile.html" class="nav-item">
+        <a href="my-profile.html" class="nav-item">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
           <span class="nav-item-label">My Profile</span>
         </a>
       </nav>
 
-      <div class="theme-switcher-section">
-        <div class="theme-toggle-container">
-          <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-            <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sun"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
-            <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-moon"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
-          </button>
-          <span class="theme-label" id="themeLabel">Light</span>
-        </div>
+            <div class="sidebar-action-section" style="padding: 0 16px; margin-bottom: 24px;">
+        <a href="change-password.html" style="display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 10px 14px; background-color: var(--accent); color: white; font-weight: 600; font-family: var(--font-body); font-size: 13px; border-radius: var(--radius); text-decoration: none; transition: all 0.2s;" onmouseover="this.style.backgroundColor='var(--accent-hover)'" onmouseout="this.style.backgroundColor='var(--accent)'">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+            <span class="nav-item-label">Change Password</span>
+          </a>
       </div>
 
       <div class="sidebar-footer">
@@ -68,7 +68,10 @@
         <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle Mobile Menu">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
         </button>
-        <div class="header-left">
+        <div class="header-left" style="display: flex; gap: 20px; align-items: center;">
+          <div id="headerProfilePhoto" style="width: 50px; height: 50px; border-radius: 50%; background-color: var(--border); overflow: hidden; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
           <div>
             <h1 class="page-title">Student Dashboard</h1>
             <p class="page-subtitle">Welcome to your personal dashboard</p>
@@ -80,52 +83,57 @@
       <div class="stats-grid" id="statsGrid">
         <div class="stat-card">
           <div class="stat-label">Enrollment Number</div>
-          <div class="stat-value" id="enrollmentNumber">—</div>
+          <div class="stat-value" id="enrollmentNumber">â€”</div>
         </div>
         <div class="stat-card">
           <div class="stat-label">Name</div>
-          <div class="stat-value" id="studentName">—</div>
+          <div class="stat-value" id="studentName">â€”</div>
         </div>
         <div class="stat-card">
           <div class="stat-label">Branch</div>
-          <div class="stat-value" id="studentBranch">—</div>
+          <div class="stat-value" id="studentBranch">â€”</div>
         </div>
         <div class="stat-card">
           <div class="stat-label">Year</div>
-          <div class="stat-value" id="studentYear">—</div>
+          <div class="stat-value" id="studentYear">â€”</div>
         </div>
       </div>
 
       <div class="charts-row">
         <div class="chart-card">
-          <h3 class="chart-title">Quick Actions</h3>
+          <h3 class="chart-title">Actions</h3>
           <div style="padding: 1.5rem;">
             <p style="margin-bottom: 1rem; color: var(--text-muted); font-size: 13px;">
               Access your profile to view and update your personal information.
             </p>
-            <a href="profile.html" style="display: inline-block; padding: 10px 16px; background: var(--accent); color: var(--bg); border-radius: var(--radius); text-decoration: none; font-weight: 600; font-size: 13px; transition: all 0.2s;" onmouseover="this.style.background = 'var(--accent-hover)'" onmouseout="this.style.background = 'var(--accent)'">
-              View My Profile
+            <a href="my-profile.html" style="display: inline-block; padding: 10px 16px; background: var(--accent); color: var(--bg); border-radius: var(--radius); text-decoration: none; font-weight: 600; font-size: 13px; transition: all 0.2s;" onmouseover="this.style.background = 'var(--accent-hover)'" onmouseout="this.style.background = 'var(--accent)'">
+              My Profile
             </a>
           </div>
         </div>
-        <div class="chart-card">
-          <h3 class="chart-title">Account Settings</h3>
-          <div style="padding: 1.5rem;">
-            <p style="margin-bottom: 1rem; color: var(--text-muted); font-size: 13px;">
-              Manage your account preferences, password, and contact information.
+                <div class="chart-card">
+          <h3 class="chart-title">Profile Completion</h3>
+          <div style="padding: 1.5rem; display: flex; align-items: center; justify-content: center; flex-direction: column;">
+            <div style="position: relative; width: 120px; height: 120px; border-radius: 50%; background: conic-gradient(var(--accent) 0%, var(--bg-3) 0%); display: flex; align-items: center; justify-content: center;" id="profileCompletionChart">
+              <div style="width: 100px; height: 100px; border-radius: 50%; background: var(--bg-2); display: flex; align-items: center; justify-content: center;">
+                <span style="font-size: 24px; font-weight: 700; color: var(--text);" id="profileCompletionText">0%</span>
+              </div>
+            </div>
+            <p style="margin-top: 1rem; color: var(--text-muted); font-size: 13px; text-align: center;">
+              Complete your profile . <a href="my-profile.html" style="color: var(--accent); font-weight: 600; text-decoration: underline;">Edit Profile</a>
             </p>
-            <button onclick="showAccountSettings()" style="padding: 10px 16px; background: var(--accent); color: var(--bg); border: none; border-radius: var(--radius); font-weight: 600; font-size: 13px; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background = 'var(--accent-hover)'" onmouseout="this.style.background = 'var(--accent)'">
-              Account Settings
-            </button>
           </div>
         </div>
       </div>
     </main>
   </div>
 
-  <footer class="universal-footer">Made by IoSC & AWS EDC</footer>
+  <footer class="universal-footer">Made by IoSC & AWS EDC | Support: <a href="mailto:iosc.aws@gmail.com" style="text-decoration: underline;">iosc.aws@gmail.com</a></footer>
 
   <script src="js/api.js"></script>
   <script src="js/pages/dashboard2.js"></script>
 </body>
 </html>
+
+
+

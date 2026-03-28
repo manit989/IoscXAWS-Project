@@ -1,84 +1,11 @@
-const API = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') 
-  ? "http://localhost:8000" 
-  : "https://estudent-cell.onrender.com";
+import re
 
-// Toggle password visibility
-function togglePasswordVisibility(inputId, eyeIconId, eyeOffIconId) {
-  const input = document.getElementById(inputId);
-  const eyeIcon = document.getElementById(eyeIconId);
-  const eyeOffIcon = document.getElementById(eyeOffIconId);
-  
-  if (input.type === 'password') {
-    input.type = 'text';
-    eyeIcon.style.display = 'none';
-    eyeOffIcon.style.display = 'block';
-  } else {
-    input.type = 'password';
-    eyeIcon.style.display = 'block';
-    eyeOffIcon.style.display = 'none';
-  }
-}
+with open("w:/VS/IoscXAWS-Project/frontend/js/change-password.js", "r", encoding="utf-8") as f:
+    js = f.read()
 
-// Password strength check
-function checkPasswordStrength(password) {
-  const strengthBar = document.getElementById('strengthBar');
-  const strengthText = document.getElementById('strengthText');
-  
-  if (!password) {
-    strengthBar.className = 'strength-bar';
-    strengthText.textContent = 'Password strength: -';
-    return;
-  }
-  
-  let strength = 0;
-  
-  // Length check
-  if (password.length >= 8) strength++;
-  if (password.length >= 12) strength++;
-  
-  // Uppercase and lowercase
-  if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
-  
-  // Numbers
-  if (/[0-9]/.test(password)) strength++;
-  
-  // Special characters
-  if (/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) strength++;
-  
-  // Determine strength level
-  let level = 'weak';
-  let className = 'weak';
-  
-  if (strength >= 4) {
-    level = 'Strong';
-    className = 'strong';
-  } else if (strength >= 2) {
-    level = 'Fair';
-    className = 'fair';
-  } else {
-    level = 'Weak';
-    className = 'weak';
-  }
-  
-  strengthBar.className = `strength-bar ${className}`;
-  strengthText.textContent = `Password strength: ${level}`;
-}
+pattern = r"async function submitChangePassword\(e\) \{[\s\S]*?(?=\}\n\n// Check authentication on load)"
 
-// Show alert
-function showAlert(message, type = 'error') {
-  const alertBox = document.getElementById('alertBox');
-  alertBox.textContent = message;
-  alertBox.className = `alert show alert-${type}`;
-  
-  if (type === 'success') {
-    setTimeout(() => {
-      alertBox.classList.remove('show');
-    }, 3000);
-  }
-}
-
-// Submit change password form
-async function submitChangePassword(e) {
+replacement = """async function submitChangePassword(e) {
   e.preventDefault();
   
   const currentPassword = document.getElementById('currentPassword').value;
@@ -187,14 +114,9 @@ async function submitChangePassword(e) {
     showAlert('Connection error. Please try again.', 'error');
     submitBtn.disabled = false;
   }
-}
+"""
 
-// Check authentication on load
-window.addEventListener('DOMContentLoaded', () => {
-  const token = localStorage.getItem('token');
-  const role = localStorage.getItem('role');
-  
-  if (!token || role !== 'student') {
-    window.location.href = 'login.html';
-  }
-});
+new_js = re.sub(pattern, replacement, js)
+
+with open("w:/VS/IoscXAWS-Project/frontend/js/change-password.js", "w", encoding="utf-8") as f:
+    f.write(new_js)
