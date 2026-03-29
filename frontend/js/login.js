@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // Update form presentation based on role
       if (currentRole === 'student') {
         usernameLabel.textContent = 'Enrollment Number';
-        usernameInput.placeholder = 'e.g., 5919051924';
+        usernameInput.placeholder = 'e.g.,5919051924';
       } else {
         usernameLabel.textContent = 'Admin ID ';
         usernameInput.placeholder = 'e.g., AdminIA100';
