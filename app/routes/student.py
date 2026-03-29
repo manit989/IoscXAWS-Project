@@ -73,6 +73,8 @@ async def delete_student(student_id: str, db: AsyncSession = Depends(get_db),cur
         return await student_services.delete_student(db, student_id)
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @router.post("/{student_id}/photo")
