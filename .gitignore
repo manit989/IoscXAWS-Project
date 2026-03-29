@@ -8,3 +8,5 @@ compose.yaml
 alembic.ini
 admins.json
 test.json
+clean_data.json
+data.json
