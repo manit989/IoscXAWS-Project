@@ -1,8 +1,4 @@
 import json
-from datetime import datetime
-
-with open("data.json", "r") as f:
-    data = json.load(f)
 
 def get_branch(prgname):
     prgname = prgname.upper()
@@ -18,9 +14,17 @@ def get_branch(prgname):
         return "UNKNOWN"
 
 def get_year(batch):
-    current_year = datetime.now().year
-    year = (current_year - 1) - batch + 1
-    return max(1, min(4, year))
+    year_map = {
+        2021: 5,
+        2022: 4,
+        2023: 3,
+        2024: 2,
+        2025: 1,
+    }
+    return year_map.get(batch, 0)
+
+with open("data.json", "r") as f:
+    data = json.load(f)
 
 result = []
 for entry in data:

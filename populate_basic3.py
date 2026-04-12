@@ -16,7 +16,6 @@ async def populate_basic():
         for i, entry in enumerate(data):
             roll_number = entry["roll_number"]
             try:
-                # Handle student record
                 result = await db.execute(select(Student).filter(Student.roll_number == roll_number))
                 student = result.scalars().first()
 
@@ -33,15 +32,14 @@ async def populate_basic():
                         name=entry["name"],
                         branch=entry["branch"],
                         year=entry["year"],
-                        email=f"{roll_number}@estudentcell.local",
-                        mobile="0000000000",
+                        email=None,
+                        mobile=None,
                     )
                     db.add(new_student)
                     await db.commit()
                     created += 1
                     print(f"[{i+1}/{len(data)}] Created student: {roll_number}")
 
-                # Handle parent record
                 parent_result = await db.execute(select(ParentDetails).filter(ParentDetails.student_id == roll_number))
                 parent = parent_result.scalars().first()
 
