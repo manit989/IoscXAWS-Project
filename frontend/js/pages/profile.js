@@ -92,10 +92,14 @@ function renderParent(p) {
   if (!p) { el.innerHTML = '<p class="no-data">No parent details added yet.</p>'; return; }
   el.innerHTML = `
     <div class="info-grid">
-      <div class="info-item"><span class="info-label">Parent Name</span><span class="info-value">${p.parent_name}</span></div>
-      <div class="info-item"><span class="info-label">Profession</span><span class="info-value">${p.profession || '—'}</span></div>
-      <div class="info-item"><span class="info-label">Contact</span><span class="info-value mono">${p.contact_number || '—'}</span></div>
-      <div class="info-item"><span class="info-label">Email</span><span class="info-value">${p.email || '—'}</span></div>
+      <div class="info-item"><span class="info-label">Father Name</span><span class="info-value">${p.father_name || '—'}</span></div>
+      <div class="info-item"><span class="info-label">Father Profession</span><span class="info-value">${p.father_profession || '—'}</span></div>
+      <div class="info-item"><span class="info-label">Father Contact</span><span class="info-value mono">${p.father_contact || '—'}</span></div>
+      <div class="info-item"><span class="info-label">Father Email</span><span class="info-value">${p.father_email || '—'}</span></div>
+      <div class="info-item"><span class="info-label">Mother Name</span><span class="info-value">${p.mother_name || '—'}</span></div>
+      <div class="info-item"><span class="info-label">Mother Profession</span><span class="info-value">${p.mother_profession || '—'}</span></div>
+      <div class="info-item"><span class="info-label">Mother Contact</span><span class="info-value mono">${p.mother_contact || '—'}</span></div>
+      <div class="info-item"><span class="info-label">Mother Email</span><span class="info-value">${p.mother_email || '—'}</span></div>
     </div>
   `;
 }
@@ -336,10 +340,14 @@ document.getElementById("parentBtn").addEventListener("click", () => {
   form.classList.toggle("hidden");
   if (!form.classList.contains("hidden") && parentExists && studentData.parent_details) {
     const p = studentData.parent_details;
-    document.getElementById("p_parent_name").value = p.parent_name;
-    document.getElementById("p_profession").value = p.profession || "";
-    document.getElementById("p_contact_number").value = p.contact_number || "";
-    document.getElementById("p_email").value = p.email || "";
+    document.getElementById("p_father_name").value = p.father_name || "";
+    document.getElementById("p_father_profession").value = p.father_profession || "";
+    document.getElementById("p_father_contact").value = p.father_contact || "";
+    document.getElementById("p_father_email").value = p.father_email || "";
+    document.getElementById("p_mother_name").value = p.mother_name || "";
+    document.getElementById("p_mother_profession").value = p.mother_profession || "";
+    document.getElementById("p_mother_contact").value = p.mother_contact || "";
+    document.getElementById("p_mother_email").value = p.mother_email || "";
   }
 });
 
@@ -349,10 +357,14 @@ document.getElementById("cancelParent").addEventListener("click", () => {
 
 document.getElementById("saveParent").addEventListener("click", async () => {
   const body = {
-    parent_name: document.getElementById("p_parent_name").value,
-    profession: document.getElementById("p_profession").value || null,
-    contact_number: document.getElementById("p_contact_number").value || null,
-    email: document.getElementById("p_email").value || null,
+    father_name: document.getElementById("p_father_name").value || null,
+    father_profession: document.getElementById("p_father_profession").value || null,
+    father_contact: document.getElementById("p_father_contact").value || null,
+    father_email: document.getElementById("p_father_email").value || null,
+    mother_name: document.getElementById("p_mother_name").value || null,
+    mother_profession: document.getElementById("p_mother_profession").value || null,
+    mother_contact: document.getElementById("p_mother_contact").value || null,
+    mother_email: document.getElementById("p_mother_email").value || null,
   };
   try {
     const method = parentExists ? "PUT" : "POST";
