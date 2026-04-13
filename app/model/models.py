@@ -84,10 +84,6 @@ class ParentDetails(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     student_id = Column(String, ForeignKey("students.roll_number"), unique=True, nullable=False)
-    parent_name = Column(String, nullable=False)
-    profession = Column(String)
-    contact_number = Column(String)
-    email = Column(String)
     father_name = Column(String, nullable=True)
     father_profession = Column(String, nullable=True)
     father_contact = Column(String, nullable=True)
