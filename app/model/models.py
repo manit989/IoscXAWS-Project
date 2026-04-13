@@ -88,6 +88,14 @@ class ParentDetails(Base):
     profession = Column(String)
     contact_number = Column(String)
     email = Column(String)
+    father_name = Column(String, nullable=True)
+    father_profession = Column(String, nullable=True)
+    father_contact = Column(String, nullable=True)
+    father_email = Column(String, nullable=True)
+    mother_name = Column(String, nullable=True)
+    mother_profession = Column(String, nullable=True)
+    mother_contact = Column(String, nullable=True)
+    mother_email = Column(String, nullable=True)
 
     student = relationship("Student", back_populates="parent_details")
 
