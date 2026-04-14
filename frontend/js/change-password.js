@@ -1,6 +1,6 @@
 const API = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') 
   ? "http://localhost:8000" 
-  : "http://213.210.37.18";
+  : "http://ggsipuedc.in";
 
 // Toggle password visibility
 function togglePasswordVisibility(inputId, eyeIconId, eyeOffIconId) {
