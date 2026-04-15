@@ -7,6 +7,9 @@
   <title>E-Student Cell</title>
   <link rel="stylesheet" href="css/style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Nunito:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -18,7 +21,6 @@
       position: relative;
     }
 
-    /* ── Blurred + darkened background ── */
     body::before {
       content: '';
       position: fixed;
@@ -31,7 +33,6 @@
       pointer-events: none;
     }
 
-    /* ── Vignette ── */
     body::after {
       content: '';
       position: fixed;
@@ -46,7 +47,6 @@
       pointer-events: none;
     }
 
-    /* ── Main content ── */
     .landing-wrap {
       position: relative;
       z-index: 1;
@@ -59,7 +59,6 @@
       padding: 3rem 1.5rem 2rem;
     }
 
-    /* ── Logo ── */
     .logo-wrapper {
       width: 100px;
       height: 100px;
@@ -75,7 +74,6 @@
       box-shadow: 0 4px 28px rgba(0, 0, 0, 0.6);
     }
 
-    /* ── Type ── */
     .eyebrow {
       font-family: 'IBM Plex Mono', monospace;
       font-size: 0.65rem;
@@ -110,7 +108,6 @@
       margin-bottom: 2.4rem;
     }
 
-    /* ── CTA button ── */
     .login-btn {
       display: inline-flex;
       align-items: center;
@@ -144,7 +141,6 @@
     }
     .login-btn:hover .btn-arrow { transform: translateX(3px); }
 
-    /* ── Footer — fixed bottom-right ── */
     footer.universal-footer {
       position: fixed;
       bottom: 18px;
@@ -168,9 +164,148 @@
       color: rgba(255, 255, 255, 0.7);
     }
 
+    /* ── Notification Bell ── */
+    #notif-wrapper {
+      position: fixed;
+      top: 16px;
+      right: 20px;
+      z-index: 10;
+    }
+
+    #bellBtn {
+      background: transparent;
+      border: none;
+      width: auto;
+      height: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      padding: 4px;
+    }
+
+    #notifBadge {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      width: 7px;
+      height: 7px;
+      background: #ff2d6b;
+      border-radius: 50%;
+      border: 1.5px solid rgba(0,0,0,0.6);
+      box-shadow: 0 0 6px rgba(255, 45, 107, 0.8);
+    }
+
+    #notifPanel {
+      display: none;
+      position: absolute;
+      top: 52px;
+      right: 0;
+      width: 280px;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(40px) saturate(1.8) brightness(0.6);
+      -webkit-backdrop-filter: blur(40px) saturate(1.8) brightness(0.6);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 
+        0 32px 64px rgba(0,0,0,0.8),
+        0 1px 0 rgba(255,255,255,0.07) inset,
+        0 -1px 0 rgba(0,0,0,0.5) inset;
+      transform-origin: top right;
+    }
+
+    .notif-header {
+      padding: 14px 16px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .notif-header span:first-child {
+      font-family: 'Nunito', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+    }
+
+    #notifCount {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: rgba(255,255,255,0.25);
+    }
+
+    .notif-item {
+      padding: 13px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      cursor: default;
+      transition: background 0.15s;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .notif-item:last-child { border-bottom: none; }
+    .notif-item:hover { background: rgba(255,255,255,0.04); }
+
+    .notif-dot {
+      margin-top: 5px;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      background: #ff2d6b;
+      box-shadow: 0 0 6px rgba(255, 45, 107, 0.7);
+    }
+    .notif-dot.read { background: rgba(255,255,255,0.12); box-shadow: none; }
+
+    .notif-title {
+      font-family: 'Nunito', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.88);
+      margin: 0 0 4px;
+    }
+
+    .notif-body {
+      font-family: 'Nunito', sans-serif;
+      font-size: 12px;
+      color: rgba(255,255,255,0.42);
+      margin: 0 0 6px;
+      line-height: 1.55;
+    }
+
+    .notif-date {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9.5px;
+      letter-spacing: 0.04em;
+      color: rgba(255,255,255,0.2);
+      margin: 0;
+    }
   </style>
 </head>
 <body>
+
+  <div id="notif-wrapper">
+    <button id="bellBtn" onclick="toggleNotifPanel()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="rgba(255,255,255,0.45)">
+        <path d="M12 2a7 7 0 0 0-7 7v4l-2 2v1h18v-1l-2-2V9a7 7 0 0 0-7-7zm0 20a2 2 0 0 0 2-2h-4a2 2 0 0 0 2 2z"/>
+      </svg>
+      <span id="notifBadge"></span>
+    </button>
+
+    <div id="notifPanel">
+      <div class="notif-header">
+        <span>Updates</span>
+        <span id="notifCount">2 new</span>
+      </div>
+      <div id="notifList"></div>
+    </div>
+  </div>
 
   <div class="landing-wrap">
     <div class="logo-wrapper">
@@ -197,4 +332,120 @@
   </a>
 
   <footer class="universal-footer">
-    Made by IoSC &amp; AWS EDC &nbsp;&middot;&nbsp; Support: <a href="/cdn-cgi/l/email-protection#e28b8d9181cc839591a2858f838b8ecc818d8f"><span class
+    Made by IoSC &amp; AWS EDC &nbsp;&middot;&nbsp; Support: <a href="mailto:support@estudentcell.in">support@estudentcell.in</a>
+  </footer>
+
+  <script>
+    const notifications = [
+      {
+        id: 1,
+        title: "Scholarship input fix",
+        body: "Update your scholarship details again, the input field has been corrected.",
+        date: "15 Apr 2026"
+      },
+      {
+        id: 2,
+        title: "Image uploading fix",
+        body: "Profile image uploads are now working correctly.",
+        date: "14 Apr 2026"
+      }
+    ];
+
+    const readSet = new Set();
+    let isOpen = false; 
+
+    function renderNotifs() {
+      document.getElementById("notifList").innerHTML = notifications.map(n => `
+        <div class="notif-item ${readSet.has(n.id) ? '' : 'unread'}" onclick="markRead(${n.id})">
+          <div class="notif-dot ${readSet.has(n.id) ? 'read' : ''}"></div>
+          <div>
+            <p class="notif-title">${n.title}</p>
+            <p class="notif-body">${n.body}</p>
+            <p class="notif-date">${n.date}</p>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function markRead(id) {
+      readSet.add(id);
+      updateBadge();
+      renderNotifs();
+    }
+
+    function updateBadge() {
+      const unread = notifications.filter(n => !readSet.has(n.id)).length;
+      document.getElementById("notifBadge").style.display = unread > 0 ? "block" : "none";
+      document.getElementById("notifCount").textContent = unread > 0 ? unread + " new" : "";
+    }
+
+    function genieOpen(p) {
+      const rows = p.querySelectorAll('.notif-header, .notif-item');
+      const total = rows.length;
+
+      gsap.set(p, { display: 'block', opacity: 1, transformOrigin: 'top right' });
+
+      // Main Panel Warp
+      gsap.fromTo(p,
+        { scaleX: 0.12, scaleY: 0.06, skewX: 18, skewY: -4, opacity: 0, y: -10 },
+        { scaleX: 1, scaleY: 1, skewX: 0, skewY: 0, opacity: 1, y: 0, duration: 0.55, ease: "expo.out" }
+      );
+
+      // Staggered Row Reveal
+      rows.forEach((row, i) => {
+        const t = i / (total - 1 || 1); 
+        gsap.fromTo(row,
+          { opacity: 0, scaleX: 0.4, skewX: 14, x: 20 },
+          { opacity: 1, scaleX: 1, skewX: 0, x: 0, duration: 0.4, delay: 0.05 + (1 - t) * 0.1, ease: "power3.out" }
+        );
+      });
+    }
+
+    function genieClose(p) {
+      const rows = p.querySelectorAll('.notif-header, .notif-item');
+      const total = rows.length;
+
+      rows.forEach((row, i) => {
+        const t = i / (total - 1 || 1);
+        gsap.to(row, {
+          opacity: 0, scaleX: 0.6, skewX: 10, x: 15, duration: 0.2, delay: t * 0.05, ease: "power2.in"
+        });
+      });
+
+      gsap.to(p, {
+        scaleX: 0.1, scaleY: 0.05, skewX: 16, skewY: -4, opacity: 0, y: -12,
+        duration: 0.3, delay: 0.1, ease: "power3.in",
+        onComplete: () => { p.style.display = "none"; }
+      });
+    }
+
+    function toggleNotifPanel() {
+      const p = document.getElementById("notifPanel");
+      
+      if (!isOpen) {
+        notifications.forEach(n => readSet.add(n.id));
+        updateBadge();
+        renderNotifs();
+        
+        genieOpen(p);
+        isOpen = true;
+      } else {
+        genieClose(p);
+        isOpen = false;
+      }
+    }
+
+    document.addEventListener("click", function(e) {
+      const wrapper = document.getElementById("notif-wrapper");
+      const p = document.getElementById("notifPanel");
+      if (!wrapper.contains(e.target) && isOpen) {
+        genieClose(p);
+        isOpen = false;
+      }
+    });
+
+    renderNotifs();
+  </script>
+
+</body>
+</html>
