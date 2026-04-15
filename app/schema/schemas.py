@@ -97,7 +97,7 @@ class AcademicResponse(AcademicBase):
 
 class FinancialBase(BaseModel):
     has_loan: bool = False
-    scholarship_type: ScholarshipEnum = ScholarshipEnum.none
+    scholarship_type: str = "None"
     scholarship_amount: Optional[Decimal] = None
 
 class FinancialCreate(FinancialBase):
