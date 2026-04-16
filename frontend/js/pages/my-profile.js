@@ -760,18 +760,16 @@ document.getElementById("uploadDocsBtn").addEventListener("click", async () => {
 });
 
 document.getElementById("uploadAcadocsBtn").addEventListener("click", async () => {
-  const marksheets = document.getElementById("upload_marksheets");
   const provisional = document.getElementById("upload_provisional");
   const semInputs = [1,2,3,4,5,6,7,8].map(i => document.getElementById(`upload_sem${i}_marksheet`));
-  const anySelected = marksheets.files[0] || provisional.files[0] || semInputs.some(el => el && el.files[0]);
+  const anySelected = (provisional && provisional.files[0]) || semInputs.some(el => el && el.files[0]);
   if (!anySelected) {
     showAlert("profileAlert", "Please select at least one file to upload.", "error");
     return;
   }
   try {
     const formData = new FormData();
-    if (marksheets.files[0]) formData.append("marksheets", marksheets.files[0]);
-    if (provisional.files[0]) formData.append("provisional_cert", provisional.files[0]);
+    if (provisional && provisional.files[0]) formData.append("provisional_cert", provisional.files[0]);
     semInputs.forEach((el, idx) => { if (el && el.files[0]) formData.append(`sem${idx+1}_marksheet`, el.files[0]); });
     const res = await fetch(`${API}/students/${studentId}/academic-documents/upload`, {
       method: "POST",
