@@ -265,6 +265,10 @@ function renderAcadocs(a) {
         ${dlBtn("Marksheets", "marksheets", a.marksheets_path)}
         ${dlBtn("Provisional Cert", "provisional_cert", a.provisional_cert_path)}
       </div>
+      <h4 style="margin:16px 0 10px;color:#aaa;font-size:0.85rem;text-transform:uppercase;letter-spacing:0.05em;">Semester Marksheets</h4>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;">
+        ${[1,2,3,4,5,6,7,8].map(i => dlBtn(`Sem ${i}`, `sem${i}_marksheet`, a[`sem${i}_marksheet`])).join("")}
+      </div>
     </div>
   `;
 }
@@ -758,17 +762,17 @@ document.getElementById("uploadDocsBtn").addEventListener("click", async () => {
 document.getElementById("uploadAcadocsBtn").addEventListener("click", async () => {
   const marksheets = document.getElementById("upload_marksheets");
   const provisional = document.getElementById("upload_provisional");
-
-  if (!marksheets.files[0] && !provisional.files[0]) {
+  const semInputs = [1,2,3,4,5,6,7,8].map(i => document.getElementById(`upload_sem${i}_marksheet`));
+  const anySelected = marksheets.files[0] || provisional.files[0] || semInputs.some(el => el && el.files[0]);
+  if (!anySelected) {
     showAlert("profileAlert", "Please select at least one file to upload.", "error");
     return;
   }
-
   try {
     const formData = new FormData();
     if (marksheets.files[0]) formData.append("marksheets", marksheets.files[0]);
     if (provisional.files[0]) formData.append("provisional_cert", provisional.files[0]);
-
+    semInputs.forEach((el, idx) => { if (el && el.files[0]) formData.append(`sem${idx+1}_marksheet`, el.files[0]); });
     const res = await fetch(`${API}/students/${studentId}/academic-documents/upload`, {
       method: "POST",
       headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` },
@@ -777,6 +781,7 @@ document.getElementById("uploadAcadocsBtn").addEventListener("click", async () =
     if (!res.ok) { const err = await res.json().catch(() => ({})); throw new Error(err.detail || "Upload failed"); }
     showAlert("profileAlert", "Academic files uploaded successfully.", "success");
     marksheets.value = ""; provisional.value = "";
+    semInputs.forEach(el => { if (el) el.value = ""; });
   } catch (e) {
     showAlert("profileAlert", e.message, "error");
   }
