@@ -199,6 +199,14 @@ class AcademicDocsResponse(AcademicDocsBase):
     student_id: str
     marksheets_path: Optional[str] = None
     provisional_cert_path: Optional[str] = None
+    sem1_marksheet: Optional[str] = None
+    sem2_marksheet: Optional[str] = None
+    sem3_marksheet: Optional[str] = None
+    sem4_marksheet: Optional[str] = None
+    sem5_marksheet: Optional[str] = None
+    sem6_marksheet: Optional[str] = None
+    sem7_marksheet: Optional[str] = None
+    sem8_marksheet: Optional[str] = None
 
 class FullStudentProfile(StudentResponse):
     classification: Optional[ClassificationResponse] = None

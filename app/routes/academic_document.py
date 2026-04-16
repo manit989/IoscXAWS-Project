@@ -61,14 +61,21 @@ async def upload_academic_docs(
     student_id: str,
     marksheets: Optional[UploadFile] = File(None),
     provisional_cert: Optional[UploadFile] = File(None),
+    sem1_marksheet: Optional[UploadFile] = File(None),
+    sem2_marksheet: Optional[UploadFile] = File(None),
+    sem3_marksheet: Optional[UploadFile] = File(None),
+    sem4_marksheet: Optional[UploadFile] = File(None),
+    sem5_marksheet: Optional[UploadFile] = File(None),
+    sem6_marksheet: Optional[UploadFile] = File(None),
+    sem7_marksheet: Optional[UploadFile] = File(None),
+    sem8_marksheet: Optional[UploadFile] = File(None),
     db: AsyncSession = Depends(get_db)
 ):
     try:
         return await academic_document_services.upload_academic_docs(
-            db,
-            student_id,
-            marksheets,
-            provisional_cert
+            db, student_id, marksheets, provisional_cert,
+            sem1_marksheet, sem2_marksheet, sem3_marksheet, sem4_marksheet,
+            sem5_marksheet, sem6_marksheet, sem7_marksheet, sem8_marksheet
         )
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))

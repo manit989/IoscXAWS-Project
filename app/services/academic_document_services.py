@@ -81,7 +81,15 @@ async def upload_academic_docs(
     db: AsyncSession,
     student_id: str,
     marksheets=None,
-    provisional_cert=None
+    provisional_cert=None,
+    sem1_marksheet=None,
+    sem2_marksheet=None,
+    sem3_marksheet=None,
+    sem4_marksheet=None,
+    sem5_marksheet=None,
+    sem6_marksheet=None,
+    sem7_marksheet=None,
+    sem8_marksheet=None
 ):
     result = await db.execute(
         select(models.AcademicDocuments).where(
@@ -100,12 +108,18 @@ async def upload_academic_docs(
         obj.marksheets_path = save_file(student_id, marksheets)
     if provisional_cert:
         obj.provisional_cert_path = save_file(student_id, provisional_cert)
+    sem_files = [sem1_marksheet, sem2_marksheet, sem3_marksheet, sem4_marksheet,
+                 sem5_marksheet, sem6_marksheet, sem7_marksheet, sem8_marksheet]
+    for i, sem_file in enumerate(sem_files, 1):
+        if sem_file:
+            setattr(obj, f"sem{i}_marksheet", save_file(student_id, sem_file))
 
     try:
         await db.commit()
         return {
             "marksheets_path": obj.marksheets_path,
-            "provisional_cert_path": obj.provisional_cert_path
+            "provisional_cert_path": obj.provisional_cert_path,
+            **{f"sem{i}_marksheet": getattr(obj, f"sem{i}_marksheet") for i in range(1, 9)}
         }
     except Exception:
         await db.rollback()
