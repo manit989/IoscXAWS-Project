@@ -88,7 +88,8 @@ async def download_academic_doc(
     file_type: str,
     db: AsyncSession = Depends(get_db)
 ):
-    if file_type not in ["marksheets", "provisional_cert"]:
+    valid_types = ["marksheets", "provisional_cert"] + [f"sem{i}_marksheet" for i in range(1, 9)]
+    if file_type not in valid_types:
         raise HTTPException(status_code=400, detail="Invalid file type")
     try:
         doc = await academic_document_services.get_academic_docs(db, student_id)
@@ -97,6 +98,7 @@ async def download_academic_doc(
     path_map = {
         "marksheets": doc.marksheets_path,
         "provisional_cert": doc.provisional_cert_path,
+        **{f"sem{i}_marksheet": getattr(doc, f"sem{i}_marksheet") for i in range(1, 9)}
     }
     path = path_map[file_type]
     if not path or not os.path.exists(path):
@@ -115,7 +117,8 @@ async def download_academic_doc_public(
     file_type: str,
     db: AsyncSession = Depends(get_db)
 ):
-    if file_type not in ["marksheets", "provisional_cert"]:
+    valid_types = ["marksheets", "provisional_cert"] + [f"sem{i}_marksheet" for i in range(1, 9)]
+    if file_type not in valid_types:
         raise HTTPException(status_code=400, detail="Invalid file type")
     try:
         doc = await academic_document_services.get_academic_docs(db, student_id)
@@ -124,6 +127,7 @@ async def download_academic_doc_public(
     path_map = {
         "marksheets": doc.marksheets_path,
         "provisional_cert": doc.provisional_cert_path,
+        **{f"sem{i}_marksheet": getattr(doc, f"sem{i}_marksheet") for i in range(1, 9)}
     }
     path = path_map[file_type]
     if not path or not os.path.exists(path):
