@@ -25,11 +25,10 @@ class VerifyOTPRequest(BaseModel):
 async def send_otp_route(request: SendOTPRequest, db: AsyncSession = Depends(get_db)):
     if not request.email.endswith("@std.ggsipu.ac.in"):
         raise HTTPException(status_code=400, detail="Email must end with @std.ggsipu.ac.in")
-    
+
     if not request.enrollment_number.strip():
         raise HTTPException(status_code=400, detail="Enrollment number is required")
 
-    # Check if user already exists
     from sqlalchemy.future import select
     existing = await db.execute(
         select(DBUser).where(DBUser.username == request.enrollment_number)
@@ -40,6 +39,11 @@ async def send_otp_route(request: SendOTPRequest, db: AsyncSession = Depends(get
     try:
         await send_otp(db, request.enrollment_number, request.email)
         return {"message": "OTP sent successfully"}
+    except ValueError as e:
+        # Rate limit errors get 429, others get 400
+        msg = str(e)
+        status = 429 if "Too many" in msg else 400
+        raise HTTPException(status_code=status, detail=msg)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -47,14 +51,16 @@ async def send_otp_route(request: SendOTPRequest, db: AsyncSession = Depends(get
 @router.post("/verify-otp")
 async def verify_otp_route(request: VerifyOTPRequest, db: AsyncSession = Depends(get_db)):
     if not request.email.endswith("@std.ggsipu.ac.in"):
-        raise HTTPException(status_code=400, detail="Email must end with @std.ggsipu.ac.in or @gmail.com")
+        raise HTTPException(status_code=400, detail="Email must end with @std.ggsipu.ac.in")
 
     try:
         await verify_otp(db, request.enrollment_number, request.email, request.otp)
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        msg = str(e)
+        status = 429 if "Too many" in msg else 400
+        raise HTTPException(status_code=status, detail=msg)
 
-    # Create user account
+    # create user account
     hashed_pw = await get_password_hash(request.enrollment_number)
     new_user = DBUser(
         username=request.enrollment_number,
@@ -65,7 +71,7 @@ async def verify_otp_route(request: VerifyOTPRequest, db: AsyncSession = Depends
     await db.commit()
     await db.refresh(new_user)
 
-    # Return token with must_change_password flag
+    # return token with must_change_password flag
     token = create_access_token(
         data={"sub": str(new_user.id)},
         expires_delta=timedelta(minutes=30)
